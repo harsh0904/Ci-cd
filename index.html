@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CI/CD Pipeline | Jenkins · Docker · Kubernetes · GitHub</title>
+  <meta name="description" content="Automated CI/CD pipeline integrating GitHub, Jenkins, Docker, and Kubernetes for seamless end-to-end deployment." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Particles Background -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <span class="logo-icon">⚙️</span>
+      <span>CI/CD Pipeline</span>
+    </div>
+    <div class="nav-links">
+      <a href="#pipeline">Pipeline</a>
+      <a href="#stack">Stack</a>
+      <a href="#stages">Stages</a>
+      <a href="#metrics">Metrics</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Production Ready
+      </div>
+      <h1 class="hero-title">
+        Automated
+        <span class="gradient-text">CI/CD Pipeline</span>
+      </h1>
+      <p class="hero-subtitle">
+        End-to-end automation from code push to production using Jenkins, Docker, Kubernetes & GitHub.
+      </p>
+      <div class="hero-tags">
+        <span class="tag tag-jenkins">Jenkins</span>
+        <span class="tag tag-docker">Docker</span>
+        <span class="tag tag-k8s">Kubernetes</span>
+        <span class="tag tag-github">GitHub</span>
+      </div>
+      <button class="btn-primary" id="runPipelineBtn">
+        <span class="btn-icon">▶</span> Run Pipeline Demo
+      </button>
+    </div>
+    <div class="hero-visual">
+      <div class="pipeline-mini">
+        <div class="mini-node active" id="mn1">
+          <div class="mini-icon">🔧</div>
+          <span>Code</span>
+        </div>
+        <div class="mini-arrow" id="ma1"></div>
+        <div class="mini-node" id="mn2">
+          <div class="mini-icon">🏗️</div>
+          <span>Build</span>
+        </div>
+        <div class="mini-arrow" id="ma2"></div>
+        <div class="mini-node" id="mn3">
+          <div class="mini-icon">🧪</div>
+          <span>Test</span>
+        </div>
+        <div class="mini-arrow" id="ma3"></div>
+        <div class="mini-node" id="mn4">
+          <div class="mini-icon">🐳</div>
+          <span>Docker</span>
+        </div>
+        <div class="mini-arrow" id="ma4"></div>
+        <div class="mini-node" id="mn5">
+          <div class="mini-icon">☸️</div>
+          <span>Deploy</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline Architecture -->
+  <section class="section" id="pipeline">
+    <div class="section-header">
+      <h2 class="section-title">Pipeline <span class="gradient-text">Architecture</span></h2>
+      <p class="section-desc">Automated end-to-end workflow triggered on every code commit</p>
+    </div>
+    <div class="arch-diagram">
+      <div class="arch-node" id="arch-github">
+        <div class="arch-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </div>
+        <h3>GitHub</h3>
+        <p>Code Commit triggers webhook</p>
+      </div>
+      <div class="arch-arrow">
+        <div class="arrow-line"><div class="arrow-pulse"></div></div>
+        <span class="arrow-label">webhook</span>
+      </div>
+      <div class="arch-node" id="arch-jenkins">
+        <div class="arch-icon jenkins-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.032 16.48C.79 14.83 0 12.79 0 10.56 0 5.09 4.55.54 10.02.54c.55 0 1.09.04 1.62.12C6.29 1.24 2.78 5.38 2.78 10.36c0 2.24.74 4.32 1.99 6.01l-2.74.11zm19.936-5.92c0 5.47-4.55 10.02-10.02 10.02a9.97 9.97 0 0 1-6.79-2.65l2.74-.11A7.47 7.47 0 0 0 12 19.54c4.13 0 7.48-3.35 7.48-7.48 0-3.42-2.3-6.31-5.45-7.17a9.36 9.36 0 0 1 3.87 1.28c2.52 1.67 4.08 4.48 4.08 7.38l-.02.03z"/></svg>
+        </div>
+        <h3>Jenkins</h3>
+        <p>Orchestrates build & test pipeline</p>
+      </div>
+      <div class="arch-arrow">
+        <div class="arrow-line"><div class="arrow-pulse"></div></div>
+        <span class="arrow-label">image push</span>
+      </div>
+      <div class="arch-node" id="arch-docker">
+        <div class="arch-icon docker-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.983 11.078h2.119a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.119a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 0 0 .186-.186V3.574a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 0 0 .186-.186V6.29a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 0 0 .184-.186V6.29a.185.185 0 0 0-.185-.185H8.1a.185.185 0 0 0-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 0 0 .185-.186V6.29a.185.185 0 0 0-.185-.185H5.136a.186.186 0 0 0-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 0 0 .184-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 0 0 .185-.185V9.006a.185.185 0 0 0-.185-.186H5.136a.186.186 0 0 0-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.186.186 0 0 0 .184-.185V9.006a.185.185 0 0 0-.184-.186h-2.12a.185.185 0 0 0-.185.186v1.887c0 .102.083.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 0 0-.75.748 11.376 11.376 0 0 0 .692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 0 0 3.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288-.199-.148z"/></svg>
+        </div>
+        <h3>Docker</h3>
+        <p>Containerize for consistent envs</p>
+      </div>
+      <div class="arch-arrow">
+        <div class="arrow-line"><div class="arrow-pulse"></div></div>
+        <span class="arrow-label">deploy</span>
+      </div>
+      <div class="arch-node" id="arch-k8s">
+        <div class="arch-icon k8s-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.204 14.35l.007.01-.999 2.413a5.171 5.171 0 0 1-2.075-2.597l2.578-.437.004.005.485.606zm-.933-3.245l-.019-.022-2.464-1.107a5.171 5.171 0 0 0-.115 2.87l2.578-.43.01-.017.016-.027-.006-1.267zm4.636 5.394l-.706-2.49-.01-.003-.631-.483-2.514.42a5.189 5.189 0 0 0 3.861 2.556zm-5.478-8.564l1.878 1.9.016.004.752-.186 1.107-2.378A5.171 5.171 0 0 0 8.43 7.935zm9.208 1.566l-2.492 1.073-.009.018-.018.572.974 2.367A5.171 5.171 0 0 0 20.635 11h-2.8zm-1.083-1.915l-1.133 2.394.01.022.562.549 2.488-1.073a5.171 5.171 0 0 0-1.927-1.892zm-3.34 8.13l.706 2.49a5.189 5.189 0 0 0 2.727-2.137l-2.524-.421-.637.505-.272-.437zm4.133-9.12A6.343 6.343 0 0 0 12 5.585a6.349 6.349 0 0 0-6.35 6.35A6.349 6.349 0 0 0 12 18.284a6.349 6.349 0 0 0 6.35-6.35 6.348 6.348 0 0 0-1.003-3.488zM12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 23.077C5.887 23.077.923 18.113.923 12 .923 5.887 5.887.923 12 .923c6.113 0 11.077 4.964 11.077 11.077 0 6.113-4.964 11.077-11.077 11.077z"/></svg>
+        </div>
+        <h3>Kubernetes</h3>
+        <p>Orchestrate & scale containers</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="section" id="stack">
+    <div class="section-header">
+      <h2 class="section-title">Tech <span class="gradient-text">Stack</span></h2>
+      <p class="section-desc">Battle-tested tools powering the pipeline</p>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-card card-github">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </div>
+          <h3>GitHub</h3>
+        </div>
+        <p>Source control & webhook integration that triggers the pipeline on every commit to main branch.</p>
+        <ul class="card-features">
+          <li>✓ Webhook triggers on push</li>
+          <li>✓ Branch protection rules</li>
+          <li>✓ Pull request automation</li>
+        </ul>
+      </div>
+
+      <div class="stack-card card-jenkins">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">🏗️</div>
+          <h3>Jenkins</h3>
+        </div>
+        <p>CI server that orchestrates the full pipeline: from build to test, image creation, and deployment.</p>
+        <ul class="card-features">
+          <li>✓ Declarative Jenkinsfile</li>
+          <li>✓ Parallel stage execution</li>
+          <li>✓ Build artifact management</li>
+        </ul>
+      </div>
+
+      <div class="stack-card card-docker">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">🐳</div>
+          <h3>Docker</h3>
+        </div>
+        <p>Containerizes the application for consistent, portable deployment across all environments.</p>
+        <ul class="card-features">
+          <li>✓ Multi-stage Dockerfiles</li>
+          <li>✓ Image versioning & tagging</li>
+          <li>✓ Registry push/pull</li>
+        </ul>
+      </div>
+
+      <div class="stack-card card-k8s">
+        <div class="card-glow"></div>
+        <div class="card-header">
+          <div class="card-icon">☸️</div>
+          <h3>Kubernetes</h3>
+        </div>
+        <p>Manages container orchestration, auto-scaling, self-healing, and zero-downtime deployments.</p>
+        <ul class="card-features">
+          <li>✓ Rolling deployments</li>
+          <li>✓ Auto-scaling (HPA)</li>
+          <li>✓ Health checks & probes</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline Stages -->
+  <section class="section" id="stages">
+    <div class="section-header">
+      <h2 class="section-title">Pipeline <span class="gradient-text">Stages</span></h2>
+      <p class="section-desc">Step-by-step automated workflow</p>
+    </div>
+    <div class="stages-container">
+      <div class="stage" data-step="1">
+        <div class="stage-number">01</div>
+        <div class="stage-content">
+          <div class="stage-icon">📝</div>
+          <h3>Code Commit</h3>
+          <p>Developer pushes code to GitHub. Webhook fires instantly, notifying Jenkins to start the pipeline.</p>
+          <div class="stage-code">
+            <span class="code-comment"># GitHub Webhook</span><br/>
+            git push origin main
+          </div>
+        </div>
+      </div>
+      <div class="stage-connector"><div class="connector-line"></div></div>
+
+      <div class="stage" data-step="2">
+        <div class="stage-number">02</div>
+        <div class="stage-content">
+          <div class="stage-icon">🏗️</div>
+          <h3>Jenkins Build</h3>
+          <p>Jenkins pulls the latest code, installs dependencies, and compiles the application artifacts.</p>
+          <div class="stage-code">
+            <span class="code-comment">// Jenkinsfile stage</span><br/>
+            stage('Build') &#123; ... &#125;
+          </div>
+        </div>
+      </div>
+      <div class="stage-connector"><div class="connector-line"></div></div>
+
+      <div class="stage" data-step="3">
+        <div class="stage-number">03</div>
+        <div class="stage-content">
+          <div class="stage-icon">🧪</div>
+          <h3>Automated Tests</h3>
+          <p>Unit, integration, and security tests run in parallel. Pipeline halts on any failure.</p>
+          <div class="stage-code">
+            <span class="code-comment">// Run test suite</span><br/>
+            npm run test --coverage
+          </div>
+        </div>
+      </div>
+      <div class="stage-connector"><div class="connector-line"></div></div>
+
+      <div class="stage" data-step="4">
+        <div class="stage-number">04</div>
+        <div class="stage-content">
+          <div class="stage-icon">🐳</div>
+          <h3>Docker Image</h3>
+          <p>Application is containerized into a Docker image, tagged with commit SHA, and pushed to registry.</p>
+          <div class="stage-code">
+            <span class="code-comment"># Build & push image</span><br/>
+            docker build -t app:$SHA .
+          </div>
+        </div>
+      </div>
+      <div class="stage-connector"><div class="connector-line"></div></div>
+
+      <div class="stage" data-step="5">
+        <div class="stage-number">05</div>
+        <div class="stage-content">
+          <div class="stage-icon">☸️</div>
+          <h3>Kubernetes Deploy</h3>
+          <p>Rolling update deployed to Kubernetes cluster. Health checks ensure zero-downtime deployment.</p>
+          <div class="stage-code">
+            <span class="code-comment"># Apply K8s manifests</span><br/>
+            kubectl apply -f k8s/
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics -->
+  <section class="section" id="metrics">
+    <div class="section-header">
+      <h2 class="section-title">Key <span class="gradient-text">Metrics</span></h2>
+      <p class="section-desc">Measurable impact of the automated pipeline</p>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value" data-target="100">0</div>
+        <div class="metric-symbol">%</div>
+        <div class="metric-label">Deployment Automation</div>
+        <div class="metric-desc">Zero manual steps from code push to production</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" data-target="75">0</div>
+        <div class="metric-symbol">%</div>
+        <div class="metric-label">Faster Deployments</div>
+        <div class="metric-desc">Reduction in deployment time vs. manual process</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" data-target="99">0</div>
+        <div class="metric-symbol">%</div>
+        <div class="metric-label">Uptime Achieved</div>
+        <div class="metric-desc">Rolling updates ensure zero-downtime releases</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" data-target="5">0</div>
+        <div class="metric-symbol">min</div>
+        <div class="metric-label">Pipeline Duration</div>
+        <div class="metric-desc">Average full pipeline run from commit to deploy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Demo -->
+  <section class="section demo-section" id="demo">
+    <div class="section-header">
+      <h2 class="section-title">Live Pipeline <span class="gradient-text">Demo</span></h2>
+      <p class="section-desc">Click to simulate a real pipeline run</p>
+    </div>
+    <div class="demo-container">
+      <div class="demo-controls">
+        <button class="btn-primary" id="startDemo">▶ Trigger Pipeline</button>
+        <button class="btn-secondary" id="resetDemo">↺ Reset</button>
+      </div>
+      <div class="demo-pipeline">
+        <div class="demo-stage" id="ds-checkout">
+          <div class="demo-stage-header">
+            <div class="demo-stage-dot"></div>
+            <span class="demo-stage-name">Checkout</span>
+            <span class="demo-stage-status" id="st-checkout">pending</span>
+          </div>
+          <div class="demo-stage-bar"><div class="demo-stage-fill" id="fill-checkout"></div></div>
+        </div>
+        <div class="demo-stage" id="ds-build">
+          <div class="demo-stage-header">
+            <div class="demo-stage-dot"></div>
+            <span class="demo-stage-name">Build</span>
+            <span class="demo-stage-status" id="st-build">pending</span>
+          </div>
+          <div class="demo-stage-bar"><div class="demo-stage-fill" id="fill-build"></div></div>
+        </div>
+        <div class="demo-stage" id="ds-test">
+          <div class="demo-stage-header">
+            <div class="demo-stage-dot"></div>
+            <span class="demo-stage-name">Test</span>
+            <span class="demo-stage-status" id="st-test">pending</span>
+          </div>
+          <div class="demo-stage-bar"><div class="demo-stage-fill" id="fill-test"></div></div>
+        </div>
+        <div class="demo-stage" id="ds-docker">
+          <div class="demo-stage-header">
+            <div class="demo-stage-dot"></div>
+            <span class="demo-stage-name">Dockerize</span>
+            <span class="demo-stage-status" id="st-docker">pending</span>
+          </div>
+          <div class="demo-stage-bar"><div class="demo-stage-fill" id="fill-docker"></div></div>
+        </div>
+        <div class="demo-stage" id="ds-deploy">
+          <div class="demo-stage-header">
+            <div class="demo-stage-dot"></div>
+            <span class="demo-stage-name">Deploy</span>
+            <span class="demo-stage-status" id="st-deploy">pending</span>
+          </div>
+          <div class="demo-stage-bar"><div class="demo-stage-fill" id="fill-deploy"></div></div>
+        </div>
+      </div>
+      <div class="demo-log" id="demoLog">
+        <span class="log-prompt">$</span> Waiting for pipeline trigger...
+      </div>
+      <div class="demo-result" id="demoResult"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>CI/CD Pipeline Project &mdash; Jenkins · Docker · Kubernetes · GitHub</p>
+    <p class="footer-sub">Designed to automate, scale, and deliver with confidence.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
