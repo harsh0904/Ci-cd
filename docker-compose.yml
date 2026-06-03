@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      target: builder   # use builder stage for dev (has devDependencies)
+    container_name: task-api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/taskmanager
+      - APP_VERSION=dev
+    volumes:
+      - ./src:/app/src   # hot reload
+    command: npm run dev
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - tasknet
+
+  mongo:
+    image: mongo:7.0
+    container_name: task-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tasknet
+
+volumes:
+  mongo_data:
+
+networks:
+  tasknet:
+    driver: bridge

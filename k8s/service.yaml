@@ -1,16 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cicd-service
+  name: taskapi-service
+  namespace: app
   labels:
-    app: cicd-project
+    app: taskapi
 spec:
   selector:
-    app: cicd-project
+    app: taskapi
   type: NodePort
   ports:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 3000
       nodePort: 30080

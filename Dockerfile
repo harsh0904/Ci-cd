@@ -1,30 +1,41 @@
-# Multi-stage build: serve static site with nginx alpine
-FROM nginx:alpine
+# ─── Stage 1: Build & Test ───────────────────────────────────────
+FROM node:20-alpine AS builder
 
-# Remove default nginx content
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Copy static site files
-COPY index.html style.css script.js /usr/share/nginx/html/
+# Install dependencies first (layer caching)
+COPY package*.json ./
+RUN npm ci
 
-# Custom nginx config for security headers
-RUN printf 'server {\n\
-    listen 80;\n\
-    server_name _;\n\
-    root /usr/share/nginx/html;\n\
-    index index.html;\n\
-    \n\
-    location / {\n\
-        try_files $uri $uri/ =404;\n\
-    }\n\
-    \n\
-    add_header X-Frame-Options "SAMEORIGIN";\n\
-    add_header X-Content-Type-Options "nosniff";\n\
-    add_header X-XSS-Protection "1; mode=block";\n\
-    \n\
-    gzip on;\n\
-    gzip_types text/plain text/css application/javascript;\n\
-}\n' > /etc/nginx/conf.d/default.conf
+# Copy source code
+COPY src/ ./src/
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# ─── Stage 2: Production ─────────────────────────────────────────
+FROM node:20-alpine AS production
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodeuser -u 1001
+
+WORKDIR /app
+
+# Install production dependencies only
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy source from builder
+COPY --from=builder /app/src ./src
+
+# Set ownership
+RUN chown -R nodeuser:nodejs /app
+USER nodeuser
+
+EXPOSE 3000
+
+ENV NODE_ENV=production
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+
+CMD ["node", "src/server.js"]

@@ -1,46 +1,67 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cicd-deployment
+  name: taskapi-deployment
+  namespace: app
   labels:
-    app: cicd-project
-    version: "1.0"
+    app: taskapi
+    version: "1.0.0"
+  annotations:
+    deployment.kubernetes.io/revision: "1"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: cicd-project
+      app: taskapi
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 0
+      maxUnavailable: 0   # Zero-downtime deploys
   template:
     metadata:
       labels:
-        app: cicd-project
+        app: taskapi
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
-        - name: cicd
+        - name: taskapi
           image: harsh091004/cicd-project:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 3000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: taskapi-config
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: taskapi-secret
+                  key: MONGODB_URI
           resources:
             requests:
-              memory: "32Mi"
-              cpu: "25m"
-            limits:
-              memory: "64Mi"
+              memory: "128Mi"
               cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
           livenessProbe:
             httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 15
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /
-              port: 80
+              path: /health
+              port: 3000
             initialDelaySeconds: 5
             periodSeconds: 10
+            failureThreshold: 3
+      terminationGracePeriodSeconds: 30
